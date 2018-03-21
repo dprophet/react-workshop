@@ -29,8 +29,25 @@ const DATA = {
   ]
 };
 
+
+function Menu1() {
+  return <div><h1>{DATA.title}</h1>
+      <ul>{DATA.items.map(item => <li key={item.id}>{item.name}</li>)}
+      </ul></div>;
+}
+
 function Menu() {
-  return <div><h1>{DATA.title}</h1><ul>{DATA.items.map(item => <li key={item.id}>{item.name}</li>)}</ul></div>;
+    const items = DATA.items
+        .filter(item => item.type === "mexican")
+        .sort(sortBy("name"))
+        .map(item => <li key={item.id}>{item.name}</li>);
+
+    return (
+        <div id="foo1">
+            <h1>{DATA.title}</h1>
+            <ul>{items}</ul>
+        </div>
+    );
 }
 
 ReactDOM.render(<Menu />, document.getElementById("app"), () => {
