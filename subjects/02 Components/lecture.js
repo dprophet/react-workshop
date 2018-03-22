@@ -3,77 +3,42 @@ import "./styles.css";
 import React from "react";
 import ReactDOM from "react-dom";
 
-class ContentToggle extends React.Component {
-  state = {
-    isOpen: false
-  };
+let isOpen = false;
 
-  handleClick = () => {
-    this.setState({ isOpen: !this.state.isOpen }, this.props.onToggle);
-  };
-
-  render() {
-    let summaryClassName = "content-toggle-summary";
-
-    if (this.state.isOpen) {
-      summaryClassName += " content-toggle-summary-open";
-    }
-
-    return (
-      <div className="content-toggle">
-        <button onClick={this.handleClick} className={summaryClassName}>
-          {this.props.summary}
-        </button>
-        {this.state.isOpen && (
-          <div className="content-toggle-details">
-            {this.props.children}
-          </div>
-        )}
-      </div>
-    );
-  }
+function handleClick() {
+  isOpen = !isOpen;
+  updateThePage();
 }
 
-class ToggleTracker extends React.Component {
-  state = { numToggles: 0 };
+function ContentToggle() {
+  let summaryClassName = "content-toggle-summary";
 
-  handleToggle = () => {
-    this.setState({ numToggles: this.state.numToggles + 1 });
-  };
-
-  render() {
-    const children = React.Children.map(this.props.children, child =>
-      React.cloneElement(child, {
-        onToggle: this.handleToggle
-      })
-    );
-
-    return (
-      <div>
-        <p>The number of toggles is {this.state.numToggles}</p>
-        {children}
-      </div>
-    );
+  if (isOpen) {
+    summaryClassName += " content-toggle-summary-open";
   }
+
+  return (
+    <div className="content-toggle">
+      <button onClick={handleClick} className={summaryClassName}>
+        Tacos
+      </button>
+      {isOpen && (
+        <div className="content-toggle-details">
+          <p>
+            A taco is a traditional Mexican dish composed of a corn or
+            wheat tortilla folded or rolled around a filling.
+          </p>
+        </div>
+      )}
+    </div>
+  );
 }
 
-ReactDOM.render(
-  <ToggleTracker>
-    <ContentToggle summary="Tacos">
-      <p>
-        A taco is a traditional Mexican dish composed of a corn or wheat
-        tortilla folded or rolled around a filling.
-      </p>
-    </ContentToggle>
-    <ContentToggle summary="Burritos">
-      <p>
-        Like a taco, rolled up, and bigger. So if you're short on cash,
-        get this one
-      </p>
-    </ContentToggle>
-  </ToggleTracker>,
-  document.getElementById("app")
-);
+function updateThePage() {
+  ReactDOM.render(<ContentToggle />, document.getElementById("app"));
+}
+
+updateThePage();
 
 ////////////////////////////////////////////////////////////////////////////////
 // Let's encapsulate state in an object and call it what it really is. Then, add
